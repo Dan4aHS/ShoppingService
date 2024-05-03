@@ -15,7 +15,7 @@ type Service struct {
 func NewService(repo repo.IProductRepository) *Service {
 	err := repo.CreateTable()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalln(err)
 	}
 	return &Service{Repo: repo}
 }

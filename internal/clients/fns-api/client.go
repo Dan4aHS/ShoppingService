@@ -10,15 +10,23 @@ import (
 	"strconv"
 )
 
-func GetQRInfo(tgID int, qrCodeInfo string, cfg *config.Config) ([]dbmodels.Product, error) {
+type Client struct {
+	cfg *config.Config
+}
+
+func NewClient(cfg *config.Config) *Client {
+	return &Client{cfg: cfg}
+}
+
+func (c *Client) GetQRInfo(tgID int, qrCodeInfo string) ([]dbmodels.Product, error) {
 	body, err := json.Marshal(map[string]string{
-		"token": cfg.App.API.Token,
+		"token": c.cfg.App.API.Token,
 		"qrraw": qrCodeInfo,
 	})
 	if err != nil {
 		return nil, err
 	}
-	res, err := http.Post(cfg.App.API.URL, "application/json", bytes.NewBuffer(body))
+	res, err := http.Post(c.cfg.App.API.URL, "application/json", bytes.NewBuffer(body))
 	if err != nil {
 		return nil, err
 	}
@@ -31,10 +39,10 @@ func GetQRInfo(tgID int, qrCodeInfo string, cfg *config.Config) ([]dbmodels.Prod
 		return nil, err
 	}
 
-	return ProductsList(tgID, resBody)
+	return c.productsList(tgID, resBody)
 }
 
-func ProductsList(tgID int, res FNSResponse) ([]dbmodels.Product, error) {
+func (c *Client) productsList(tgID int, res FNSResponse) ([]dbmodels.Product, error) {
 	var products []dbmodels.Product
 	for _, item := range res.Data.Json.Items {
 		prod := dbmodels.Product{

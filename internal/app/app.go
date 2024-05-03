@@ -4,6 +4,7 @@ import (
 	"ShoppingExpensesService/internal/app/grpcapp"
 	"ShoppingExpensesService/internal/config"
 	"ShoppingExpensesService/internal/service"
+	"log/slog"
 )
 
 type App struct {
@@ -12,6 +13,7 @@ type App struct {
 
 func NewApp(cfg *config.Config, ps service.IProductService) *App {
 	grpcApp := grpcapp.NewApp(ps, cfg)
+	slog.Info("App initialized")
 	return &App{
 		GRPCApp: grpcApp,
 	}

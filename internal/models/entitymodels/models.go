@@ -7,6 +7,6 @@ type Product struct {
 	Market   string  `json:"market" db:"market"`
 	Price    int     `json:"price" db:"price"`
 	Category string  `json:"category" db:"category"`
-	Quantity float32 `json:"count" db:"count"`
+	Quantity float32 `json:"quantity" db:"quantity"`
 	Barcode  string  `json:"barcode" db:"barcode"`
 }

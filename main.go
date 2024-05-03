@@ -5,11 +5,13 @@ import (
 	"ShoppingExpensesService/internal/config"
 	"ShoppingExpensesService/internal/repo/postgres"
 	"ShoppingExpensesService/internal/service"
+	"ShoppingExpensesService/pkg/logging"
 	"log"
 )
 
 func main() {
 	cfg := config.GetConfig()
+	logging.InitLogging()
 	dbx, err := postgres.ConnectPostgres(cfg)
 	if err != nil {
 		log.Fatal(err)
